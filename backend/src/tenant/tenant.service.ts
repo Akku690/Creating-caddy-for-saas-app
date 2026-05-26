@@ -30,7 +30,7 @@ export class TenantService {
     // demo.dhanyatraders.live -> check custom domain
     // plantgen.live -> main site
 
-    if (!hostname || hostname === 'plantgen.live' || hostname === 'localhost:3000') {
+    if (!hostname || hostname === 'plantgen.live' || hostname === 'localhost:3000' || hostname === 'localhost:3001' || hostname === 'localhost') {
       return { isMainSite: true };
     }
 

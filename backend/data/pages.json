@@ -1,1 +1,32 @@
-[]
+[
+  {
+    "tenantId": 4,
+    "title": "Home",
+    "slug": "home",
+    "description": "",
+    "url": "testcompany.plantgen.live/",
+    "status": "active",
+    "createdAt": "2026-05-26T06:35:49.302Z",
+    "id": 1
+  },
+  {
+    "tenantId": 12,
+    "title": "helloooo",
+    "slug": "helloooo",
+    "description": "",
+    "url": "fghf.plantgen.live/helloooo",
+    "status": "active",
+    "createdAt": "2026-05-26T06:52:52.372Z",
+    "id": 2
+  },
+  {
+    "tenantId": 12,
+    "title": "youuuu",
+    "slug": "youuuu",
+    "description": "",
+    "url": "fghf.plantgen.live/youuuu",
+    "status": "active",
+    "createdAt": "2026-05-26T06:53:31.473Z",
+    "id": 3
+  }
+]
