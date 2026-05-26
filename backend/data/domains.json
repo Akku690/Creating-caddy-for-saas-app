@@ -9,5 +9,25 @@
     "verificationMethod": "CNAME",
     "verifiedAt": "2024-01-01T00:00:00Z",
     "createdAt": "2024-01-01T00:00:00Z"
+  },
+  {
+    "tenantId": 2,
+    "domain": "techstartup.com",
+    "type": "custom",
+    "status": "pending",
+    "verificationToken": "bbd7f846db6034ef77e10cae678483c4",
+    "verificationMethod": "CNAME",
+    "createdAt": "2026-05-26T06:03:21.967Z",
+    "id": 2
+  },
+  {
+    "tenantId": 1,
+    "domain": "shop.dhanyatraders.com",
+    "type": "custom",
+    "status": "pending",
+    "verificationToken": "967e7309d53d8d74c423afabc6e9a4ab",
+    "verificationMethod": "CNAME",
+    "createdAt": "2026-05-26T06:09:10.363Z",
+    "id": 3
   }
 ]

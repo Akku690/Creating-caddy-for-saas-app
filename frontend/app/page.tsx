@@ -8,7 +8,7 @@ import { Card, Button } from '@/app/components/UI';
 
 export default function Home() {
   const { user } = useAuthStore();
-  const { currentTenant } = useTenantStore();
+  const { currentTenant, setCurrentTenant } = useTenantStore();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -17,17 +17,20 @@ export default function Home() {
         const hostname = typeof window !== 'undefined' ? window.location.hostname : '';
         const response = await tenantAPI.resolve(hostname);
         if (response.data && !response.data.isMainSite) {
-          // Tenant page
+          setCurrentTenant(response.data);
+        } else {
+          setCurrentTenant(null);
         }
       } catch (error) {
         console.error('Error resolving tenant:', error);
+        setCurrentTenant(null);
       } finally {
         setIsLoading(false);
       }
     };
 
     resolveTenant();
-  }, []);
+  }, [setCurrentTenant]);
 
   if (isLoading) {
     return (

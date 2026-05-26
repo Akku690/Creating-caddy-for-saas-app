@@ -20,5 +20,15 @@
     "email": "admin@techstartup.com",
     "status": "active",
     "createdAt": "2024-01-02T00:00:00Z"
+  },
+  {
+    "company": "lala land",
+    "subdomain": "lalaland",
+    "email": "nitishmaurya6580@gmail.com",
+    "themeColor": "#000000",
+    "logo": "https://via.placeholder.com/150",
+    "status": "active",
+    "createdAt": "2026-05-26T05:59:42.822Z",
+    "id": 3
   }
 ]

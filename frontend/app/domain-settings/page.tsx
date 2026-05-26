@@ -35,15 +35,14 @@ function DomainSettingsContent() {
     try {
       const response = await domainAPI.connect(user.tenantId, newDomain);
       setMessage(
-        `Domain connection initiated. Follow the DNS instructions to verify.`
+        `✅ Domain connection initiated!\n\nDNS Instructions:\n${response.data.verification.instructions.join('\n')}`
       );
       setNewDomain('');
-      setTimeout(loadDomains, 1000);
+      setTimeout(loadDomains, 2000);
     } catch (error: any) {
-      setMessage(
-        error.response?.data?.message ||
-        'Error connecting domain. Please try again.'
-      );
+      const errorMsg = error.response?.data?.message || error.message || 'Error connecting domain';
+      setMessage(`❌ ${errorMsg}`);
+      console.error('Domain connect error:', error);
     } finally {
       setIsLoading(false);
     }
@@ -54,14 +53,13 @@ function DomainSettingsContent() {
 
     setIsLoading(true);
     try {
-      await domainAPI.verify(user.tenantId, domain);
-      setMessage('Domain verified successfully!');
-      setTimeout(loadDomains, 1000);
+      const response = await domainAPI.verify(user.tenantId, domain);
+      setMessage(`✅ Domain "${domain}" verified successfully!`);
+      setTimeout(loadDomains, 2000);
     } catch (error: any) {
-      setMessage(
-        error.response?.data?.message ||
-        'Error verifying domain. Please check DNS records.'
-      );
+      const errorMsg = error.response?.data?.message || error.message || 'Error verifying domain';
+      setMessage(`❌ ${errorMsg}. Ensure DNS CNAME record is set up correctly.`);
+      console.error('Domain verify error:', error);
     } finally {
       setIsLoading(false);
     }
@@ -76,7 +74,7 @@ function DomainSettingsContent() {
             <h1 className="text-3xl font-bold mb-6">Domain Settings</h1>
 
             {message && (
-              <div className="mb-4 p-4 bg-blue-100 border border-blue-400 text-blue-700 rounded-lg">
+              <div className="mb-4 p-4 bg-blue-100 border border-blue-400 text-blue-700 rounded-lg whitespace-pre-wrap">
                 {message}
               </div>
             )}
