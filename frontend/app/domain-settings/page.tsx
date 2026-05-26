@@ -1,27 +1,42 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAuthStore } from '@/lib/store';
+import { useTenantStore } from '@/lib/store';
 import { tenantAPI, domainAPI } from '@/lib/api';
 import { Navigation } from '@/app/components/Navigation';
-import { ProtectedLayout } from '@/app/components/ProtectedLayout';
 import { Card, Button, Input } from '@/app/components/UI';
 
 function DomainSettingsContent() {
-  const { user } = useAuthStore();
+  const { currentTenant, setCurrentTenant } = useTenantStore();
   const [domains, setDomains] = useState<any[]>([]);
   const [newDomain, setNewDomain] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    loadDomains();
+    resolveTenant();
   }, []);
 
-  const loadDomains = async () => {
-    if (!user?.tenantId) return;
+  const resolveTenant = async () => {
+    if (currentTenant) {
+      await loadDomains(currentTenant.id);
+      return;
+    }
     try {
-      const response = await domainAPI.getByTenant(user.tenantId);
+      const hostname = typeof window !== 'undefined' ? window.location.hostname : '';
+      const response = await tenantAPI.resolve(hostname);
+      if (response.data && !response.data.isMainSite) {
+        setCurrentTenant(response.data);
+        await loadDomains(response.data.id);
+      }
+    } catch (error) {
+      console.error('Error resolving tenant:', error);
+    }
+  };
+
+  const loadDomains = async (tenantId: number) => {
+    try {
+      const response = await domainAPI.getByTenant(tenantId);
       setDomains(response.data);
     } catch (error) {
       console.error('Error loading domains:', error);
@@ -29,16 +44,16 @@ function DomainSettingsContent() {
   };
 
   const handleConnectDomain = async () => {
-    if (!user?.tenantId || !newDomain) return;
+    if (!currentTenant || !newDomain) return;
 
     setIsLoading(true);
     try {
-      const response = await domainAPI.connect(user.tenantId, newDomain);
+      const response = await domainAPI.connect(currentTenant.id, newDomain);
       setMessage(
         `✅ Domain connection initiated!\n\nDNS Instructions:\n${response.data.verification.instructions.join('\n')}`
       );
       setNewDomain('');
-      setTimeout(loadDomains, 2000);
+      setTimeout(() => loadDomains(currentTenant.id), 2000);
     } catch (error: any) {
       const errorMsg = error.response?.data?.message || error.message || 'Error connecting domain';
       setMessage(`❌ ${errorMsg}`);
@@ -49,13 +64,13 @@ function DomainSettingsContent() {
   };
 
   const handleVerifyDomain = async (domain: string) => {
-    if (!user?.tenantId) return;
+    if (!currentTenant) return;
 
     setIsLoading(true);
     try {
-      const response = await domainAPI.verify(user.tenantId, domain);
+      const response = await domainAPI.verify(currentTenant.id, domain);
       setMessage(`✅ Domain "${domain}" verified successfully!`);
-      setTimeout(loadDomains, 2000);
+      setTimeout(() => loadDomains(currentTenant.id), 2000);
     } catch (error: any) {
       const errorMsg = error.response?.data?.message || error.message || 'Error verifying domain';
       setMessage(`❌ ${errorMsg}. Ensure DNS CNAME record is set up correctly.`);
@@ -143,9 +158,5 @@ function DomainSettingsContent() {
 }
 
 export default function DomainSettings() {
-  return (
-    <ProtectedLayout>
-      <DomainSettingsContent />
-    </ProtectedLayout>
-  );
+  return <DomainSettingsContent />;
 }

@@ -1,13 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAuthStore, useTenantStore } from '@/lib/store';
+import { useTenantStore } from '@/lib/store';
 import { tenantAPI } from '@/lib/api';
 import { Navigation } from '@/app/components/Navigation';
 import { Card, Button } from '@/app/components/UI';
 
 export default function Home() {
-  const { user } = useAuthStore();
   const { currentTenant, setCurrentTenant } = useTenantStore();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -40,7 +39,7 @@ export default function Home() {
     );
   }
 
-  if (currentTenant && !user?.role?.includes('admin')) {
+  if (currentTenant) {
     return (
       <>
         <Navigation />
@@ -61,11 +60,9 @@ export default function Home() {
               <p className="text-gray-600 mb-6">
                 Welcome to your dedicated portal
               </p>
-              {user ? (
-                <p className="text-lg text-green-600">You are logged in!</p>
-              ) : (
-                <Button>Get Started</Button>
-              )}
+              <Button onClick={() => window.location.href = '/dashboard'}>
+                Go to Dashboard
+              </Button>
             </Card>
           </div>
         </div>
@@ -118,15 +115,9 @@ export default function Home() {
           </div>
 
           <div className="mt-12 text-center">
-            {user ? (
-              <Button onClick={() => window.location.href = '/dashboard'}>
-                Go to Dashboard
-              </Button>
-            ) : (
-              <Button onClick={() => window.location.href = '/login'}>
-                Login to Continue
-              </Button>
-            )}
+            <Button onClick={() => window.location.href = '/dashboard'}>
+              Get Started
+            </Button>
           </div>
         </div>
       </div>

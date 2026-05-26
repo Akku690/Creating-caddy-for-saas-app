@@ -1,14 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAuthStore } from '@/lib/store';
 import { tenantAPI } from '@/lib/api';
 import { Navigation } from '@/app/components/Navigation';
-import { ProtectedLayout } from '@/app/components/ProtectedLayout';
 import { Card, Button, Input } from '@/app/components/UI';
 
 function AdminContent() {
-  const { user } = useAuthStore();
   const [tenants, setTenants] = useState<any[]>([]);
   const [newTenant, setNewTenant] = useState({
     company: '',
@@ -19,12 +16,8 @@ function AdminContent() {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    if (user?.role !== 'superadmin') {
-      window.location.href = '/';
-      return;
-    }
     loadTenants();
-  }, [user]);
+  }, []);
 
   const loadTenants = async () => {
     try {
@@ -151,9 +144,5 @@ function AdminContent() {
 }
 
 export default function Admin() {
-  return (
-    <ProtectedLayout>
-      <AdminContent />
-    </ProtectedLayout>
-  );
+  return <AdminContent />;
 }
