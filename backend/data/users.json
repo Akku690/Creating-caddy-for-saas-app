@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "username": "admin",
+    "password": "admin123",
+    "email": "admin@plantgen.live",
+    "tenantId": null,
+    "role": "superadmin"
+  },
+  {
+    "id": 2,
+    "username": "client1admin",
+    "password": "password123",
+    "email": "admin@dhanyatraders.com",
+    "tenantId": 1,
+    "role": "admin"
+  },
+  {
+    "id": 3,
+    "username": "client2admin",
+    "password": "password123",
+    "email": "admin@techstartup.com",
+    "tenantId": 2,
+    "role": "admin"
+  }
+]

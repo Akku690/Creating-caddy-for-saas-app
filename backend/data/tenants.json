@@ -1,0 +1,24 @@
+[
+  {
+    "id": 1,
+    "company": "Dhanya Traders",
+    "subdomain": "client1",
+    "customDomain": "demo.dhanyatraders.live",
+    "themeColor": "#16a34a",
+    "logo": "https://via.placeholder.com/150",
+    "email": "admin@dhanyatraders.com",
+    "status": "active",
+    "createdAt": "2024-01-01T00:00:00Z"
+  },
+  {
+    "id": 2,
+    "company": "Tech Startup Inc",
+    "subdomain": "client2",
+    "customDomain": "",
+    "themeColor": "#0066cc",
+    "logo": "https://via.placeholder.com/150",
+    "email": "admin@techstartup.com",
+    "status": "active",
+    "createdAt": "2024-01-02T00:00:00Z"
+  }
+]

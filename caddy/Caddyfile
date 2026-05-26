@@ -1,0 +1,38 @@
+# Caddy SaaS Configuration
+# Production-ready reverse proxy for multi-tenant setup
+
+# Main site
+plantgen.live, www.plantgen.live {
+  reverse_proxy localhost:3000 {
+    header_uri Host {http.request.host}
+  }
+}
+
+# Wildcard subdomains for tenant routing
+*.plantgen.live {
+  reverse_proxy localhost:3000 {
+    header_uri Host {http.request.host}
+  }
+}
+
+# Backend API
+api.plantgen.live {
+  reverse_proxy localhost:8000 {
+    header_uri Host {http.request.host}
+  }
+}
+
+# Health check endpoint
+health.plantgen.live {
+  respond "OK" 200
+}
+
+# Local development (remove in production)
+localhost {
+  reverse_proxy localhost:3000
+}
+
+# Localhost API (for development)
+localhost:8000 {
+  reverse_proxy localhost:8000
+}
