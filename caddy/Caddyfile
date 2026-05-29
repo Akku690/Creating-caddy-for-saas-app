@@ -4,21 +4,21 @@
 # Main site
 plantgen.live, www.plantgen.live {
   reverse_proxy localhost:3000 {
-    header_uri Host {http.request.host}
+    header_up Host {host}
   }
 }
 
 # Wildcard subdomains for tenant routing
 *.plantgen.live {
   reverse_proxy localhost:3000 {
-    header_uri Host {http.request.host}
+    header_up Host {host}
   }
 }
 
 # Backend API
 api.plantgen.live {
   reverse_proxy localhost:8000 {
-    header_uri Host {http.request.host}
+    header_up Host {host}
   }
 }
 
