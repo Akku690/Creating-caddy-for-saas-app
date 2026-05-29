@@ -137,6 +137,8 @@ Update:
 NEXT_PUBLIC_API_URL=https://api.plantgen.live
 ```
 
+For local development, you can keep `NEXT_PUBLIC_API_URL=http://localhost:8000`, but production builds should use the API subdomain.
+
 ## Step 4: Configure Caddy
 
 ### 4.1 Update Caddyfile

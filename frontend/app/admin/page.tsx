@@ -67,6 +67,8 @@ function AdminContent() {
               <h2 className="text-xl font-bold mb-4">Create New Tenant</h2>
               <div className="space-y-4">
                 <Input
+                  id="company-name"
+                  name="company"
                   label="Company Name"
                   placeholder="e.g., Acme Corp"
                   value={newTenant.company}
@@ -78,6 +80,8 @@ function AdminContent() {
                   }
                 />
                 <Input
+                  id="subdomain"
+                  name="subdomain"
                   label="Subdomain"
                   placeholder="e.g., acme"
                   value={newTenant.subdomain}
@@ -89,6 +93,8 @@ function AdminContent() {
                   }
                 />
                 <Input
+                  id="email"
+                  name="email"
                   label="Email"
                   placeholder="admin@example.com"
                   type="email"

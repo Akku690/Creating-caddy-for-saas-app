@@ -3,6 +3,10 @@
 
 # Main site
 plantgen.live, www.plantgen.live {
+  handle /api/* {
+    reverse_proxy localhost:8000
+  }
+
   reverse_proxy localhost:3000 {
     header_up Host {host}
   }
@@ -10,6 +14,10 @@ plantgen.live, www.plantgen.live {
 
 # Wildcard subdomains for tenant routing
 *.plantgen.live {
+  handle /api/* {
+    reverse_proxy localhost:8000
+  }
+
   reverse_proxy localhost:3000 {
     header_up Host {host}
   }

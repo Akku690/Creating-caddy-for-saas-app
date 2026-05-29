@@ -147,7 +147,9 @@ function DomainSettingsContent() {
             <div className="mb-8">
               <h2 className="text-xl font-bold mb-4">Add Custom Domain</h2>
               <div className="flex gap-2">
-                <Input
+                  <Input
+                    id="custom-domain"
+                    name="customDomain"
                   placeholder="example.com"
                   value={newDomain}
                   onChange={(e) => setNewDomain(e.target.value)}

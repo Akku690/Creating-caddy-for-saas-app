@@ -41,6 +41,8 @@ export function Button({
 }
 
 interface InputProps {
+  id?: string;
+  name?: string;
   label?: string;
   placeholder?: string;
   type?: string;
@@ -50,6 +52,8 @@ interface InputProps {
 }
 
 export function Input({
+  id,
+  name,
   label,
   placeholder,
   type = 'text',
@@ -59,8 +63,14 @@ export function Input({
 }: InputProps) {
   return (
     <div className="mb-4">
-      {label && <label className="block text-sm font-medium text-gray-700 mb-2">{label}</label>}
+      {label && (
+        <label htmlFor={id} className="block text-sm font-medium text-gray-700 mb-2">
+          {label}
+        </label>
+      )}
       <input
+        id={id}
+        name={name}
         type={type}
         placeholder={placeholder}
         value={value}

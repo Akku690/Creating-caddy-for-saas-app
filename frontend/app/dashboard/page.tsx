@@ -143,6 +143,8 @@ function DashboardContent() {
                   </p>
                   <div className="space-y-3">
                     <Input
+                      id="tenant-company"
+                      name="tenantCompany"
                       placeholder="e.g., Acme Corp"
                       value={newTenantCompany}
                       onChange={(e) => setNewTenantCompany(e.target.value)}
@@ -150,6 +152,8 @@ function DashboardContent() {
                     />
                     <div className="flex items-center space-x-2">
                       <Input
+                        id="tenant-subdomain"
+                        name="tenantSubdomain"
                         placeholder="e.g., acme"
                         value={newTenantSubdomain}
                         onChange={(e) => setNewTenantSubdomain(e.target.value)}
@@ -233,6 +237,8 @@ function DashboardContent() {
               </p>
               <div className="flex gap-2">
                 <Input
+                  id="page-title"
+                  name="pageTitle"
                   placeholder="e.g., Home, About, Products, Contact"
                   value={newPageTitle}
                   onChange={(e) => setNewPageTitle(e.target.value)}
