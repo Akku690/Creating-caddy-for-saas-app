@@ -4,7 +4,7 @@ import { TenantDto, TenantResponseDto } from './tenant.dto';
 
 @Controller('api/tenant')
 export class TenantController {
-  constructor(private tenantService: TenantService) {}
+  constructor(private readonly tenantService: TenantService) {}
 
   @Get()
   async getAllTenants(): Promise<TenantResponseDto[]> {
@@ -12,8 +12,9 @@ export class TenantController {
   }
 
   @Get(':id')
-  async getTenantById(@Param('id') id: number): Promise<TenantResponseDto> {
-    return this.tenantService.getTenantById(id);
+  async getTenantById(@Param('id') id: string): Promise<TenantResponseDto> {
+    const tenantId = Number.parseInt(id, 10);
+    return this.tenantService.getTenantById(tenantId);
   }
 
   @Post('resolve')

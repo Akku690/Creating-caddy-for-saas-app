@@ -6,6 +6,8 @@ import { tenantAPI } from '@/lib/api';
 import { Navigation } from '@/app/components/Navigation';
 import { Card, Button } from '@/app/components/UI';
 
+const getBrowserHostname = () => (globalThis.window ? globalThis.window.location.hostname : '');
+
 export default function Home() {
   const { currentTenant, setCurrentTenant } = useTenantStore();
   const [isLoading, setIsLoading] = useState(true);
@@ -13,7 +15,7 @@ export default function Home() {
   useEffect(() => {
     const resolveTenant = async () => {
       try {
-        const hostname = typeof window !== 'undefined' ? window.location.hostname : '';
+          const hostname = getBrowserHostname();
         const response = await tenantAPI.resolve(hostname);
         if (response.data && !response.data.isMainSite) {
           setCurrentTenant(response.data);
@@ -60,7 +62,7 @@ export default function Home() {
               <p className="text-gray-600 mb-6">
                 Welcome to your dedicated portal
               </p>
-              <Button onClick={() => window.location.href = '/dashboard'}>
+              <Button onClick={() => (globalThis.window.location.href = '/dashboard')}>
                 Go to Dashboard
               </Button>
             </Card>
@@ -108,14 +110,14 @@ export default function Home() {
                 <div className="text-4xl mb-4">🔒</div>
                 <h3 className="text-xl font-bold mb-2">Secure</h3>
                 <p className="text-gray-600">
-                  Built with JWT authentication and CORS protection
+                  Built for public multi-tenant routing and CORS protection
                 </p>
               </div>
             </Card>
           </div>
 
           <div className="mt-12 text-center">
-            <Button onClick={() => window.location.href = '/dashboard'}>
+            <Button onClick={() => (globalThis.window.location.href = '/dashboard')}>
               Get Started
             </Button>
           </div>

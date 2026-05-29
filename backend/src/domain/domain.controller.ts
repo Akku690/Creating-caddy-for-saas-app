@@ -1,10 +1,10 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, ParseIntPipe } from '@nestjs/common';
 import { DomainService } from './domain.service';
-import { DomainConnectDto, DomainVerifyDto, DomainResponseDto } from './domain.dto';
+import { DomainConnectDto, DomainResponseDto } from './domain.dto';
 
 @Controller('api/domain')
 export class DomainController {
-  constructor(private domainService: DomainService) {}
+  constructor(private readonly domainService: DomainService) {}
 
   @Get()
   async getAllDomains(): Promise<DomainResponseDto[]> {
@@ -13,7 +13,7 @@ export class DomainController {
 
   @Get('tenant/:tenantId')
   async getDomainsByTenant(
-    @Param('tenantId') tenantId: number,
+    @Param('tenantId', ParseIntPipe) tenantId: number,
   ): Promise<DomainResponseDto[]> {
     return this.domainService.getDomainsByTenant(tenantId);
   }

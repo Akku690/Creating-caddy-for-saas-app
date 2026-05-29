@@ -12,6 +12,7 @@ function DomainSettingsContent() {
   const [newDomain, setNewDomain] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [verificationInfo, setVerificationInfo] = useState<any>(null);
 
   useEffect(() => {
     resolveTenant();
@@ -21,6 +22,19 @@ function DomainSettingsContent() {
     if (currentTenant) {
       await loadDomains(currentTenant.id);
       return;
+    }
+
+    // Check localStorage for previously created tenant (persisted by dashboard)
+    const stored = typeof window !== 'undefined' ? localStorage.getItem('currentTenant') : null;
+    if (stored) {
+      try {
+        const tenant = JSON.parse(stored);
+        setCurrentTenant(tenant);
+        await loadDomains(tenant.id);
+        return;
+      } catch (err) {
+        console.warn('Invalid stored tenant', err);
+      }
     }
     try {
       const hostname = typeof window !== 'undefined' ? window.location.hostname : '';
@@ -49,9 +63,11 @@ function DomainSettingsContent() {
     setIsLoading(true);
     try {
       const response = await domainAPI.connect(currentTenant.id, newDomain);
-      setMessage(
-        `✅ Domain connection initiated!\n\nDNS Instructions:\n${response.data.verification.instructions.join('\n')}`
-      );
+      setVerificationInfo({
+        domain: response.data.domain,
+        verification: response.data.verification,
+      });
+      setMessage('✅ Domain connection initiated! See instructions below.');
       setNewDomain('');
       setTimeout(() => loadDomains(currentTenant.id), 2000);
     } catch (error: any) {
@@ -63,14 +79,48 @@ function DomainSettingsContent() {
     }
   };
 
+  const handleShowVerification = async (domain: string) => {
+    try {
+      const resp = await domainAPI.getVerification(domain);
+      setVerificationInfo(resp.data);
+      setMessage('');
+    } catch (err) {
+      console.error('Error fetching verification:', err);
+      setMessage('❌ Could not fetch verification details');
+    }
+  };
+
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setMessage('Copied to clipboard');
+      setTimeout(() => setMessage(''), 2000);
+    } catch (err) {
+      console.error('Copy failed', err);
+      setMessage('Could not copy to clipboard');
+    }
+  };
+
   const handleVerifyDomain = async (domain: string) => {
     if (!currentTenant) return;
 
     setIsLoading(true);
     try {
       const response = await domainAPI.verify(currentTenant.id, domain);
+      // Refresh domains list and tenant info so UI reflects the verified custom domain
+      await loadDomains(currentTenant.id);
+      try {
+        const tenantResp = await tenantAPI.getById(currentTenant.id);
+        setCurrentTenant(tenantResp.data);
+        localStorage.setItem('currentTenant', JSON.stringify(tenantResp.data));
+      } catch (tErr) {
+        console.warn('Could not refresh tenant after domain verify', tErr);
+      }
       setMessage(`✅ Domain "${domain}" verified successfully!`);
-      setTimeout(() => loadDomains(currentTenant.id), 2000);
+      // clear verification panel if it was showing this domain
+      if (verificationInfo && verificationInfo.domain === domain) {
+        setVerificationInfo(null);
+      }
     } catch (error: any) {
       const errorMsg = error.response?.data?.message || error.message || 'Error verifying domain';
       setMessage(`❌ ${errorMsg}. Ensure DNS CNAME record is set up correctly.`);
@@ -112,6 +162,39 @@ function DomainSettingsContent() {
               </div>
             </div>
 
+            {/* Verification Instructions Panel */}
+            {verificationInfo && (
+              <Card className="mb-8 bg-yellow-50 border-yellow-200">
+                <h3 className="font-bold text-lg mb-2">DNS Verification Instructions for {verificationInfo.domain}</h3>
+                <div className="text-sm text-gray-700 space-y-2">
+                  {verificationInfo.verification.instructions && (
+                    <div>
+                      <p className="font-semibold">Steps:</p>
+                      <pre className="bg-white p-3 rounded border text-xs whitespace-pre-wrap">{verificationInfo.verification.instructions.join('\n')}</pre>
+                    </div>
+                  )}
+                  {verificationInfo.verification.CNAME && (
+                    <div>
+                      <p className="font-semibold mt-2">CNAME Record</p>
+                      <div className="flex items-center gap-2">
+                        <code className="bg-white p-2 rounded border text-xs">{verificationInfo.verification.CNAME.name} → {verificationInfo.verification.CNAME.value}</code>
+                        <Button onClick={() => copyToClipboard(`${verificationInfo.verification.CNAME.name} ${verificationInfo.verification.CNAME.value}`)} className="text-sm">Copy</Button>
+                      </div>
+                    </div>
+                  )}
+                  {verificationInfo.verification.TXT && (
+                    <div>
+                      <p className="font-semibold mt-2">TXT Record</p>
+                      <div className="flex items-center gap-2">
+                        <code className="bg-white p-2 rounded border text-xs">{verificationInfo.verification.TXT.name} → {verificationInfo.verification.TXT.value}</code>
+                        <Button onClick={() => copyToClipboard(`${verificationInfo.verification.TXT.name} ${verificationInfo.verification.TXT.value}`)} className="text-sm">Copy</Button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </Card>
+            )}
+
             <div>
               <h2 className="text-xl font-bold mb-4">Your Domains</h2>
               <div className="space-y-4">
@@ -136,14 +219,19 @@ function DomainSettingsContent() {
                             </span>
                           </p>
                         </div>
-                        {domain.status === 'pending' && (
-                          <Button
-                            onClick={() => handleVerifyDomain(domain.domain)}
-                            disabled={isLoading}
-                          >
-                            Verify
+                        <div className="flex items-center space-x-2">
+                          {domain.status === 'pending' && (
+                            <Button
+                              onClick={() => handleVerifyDomain(domain.domain)}
+                              disabled={isLoading}
+                            >
+                              Verify
+                            </Button>
+                          )}
+                          <Button onClick={() => handleShowVerification(domain.domain)} className="text-sm">
+                            Show Instructions
                           </Button>
-                        )}
+                        </div>
                       </div>
                     </Card>
                   ))

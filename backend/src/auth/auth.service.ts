@@ -5,12 +5,12 @@ import { JwtService } from '../common/jwt.service';
 @Injectable()
 export class AuthService {
   constructor(
-    private storage: FileStorageService,
-    private jwtService: JwtService,
+    private readonly storage: FileStorageService,
+    private readonly jwtService: JwtService,
   ) {}
 
   async login(username: string, password: string) {
-    const users = this.storage.readJSON('users');
+    const users = await this.storage.readJSON('users');
     const user = users.find(
       (u: any) => u.username === username && u.password === password,
     );

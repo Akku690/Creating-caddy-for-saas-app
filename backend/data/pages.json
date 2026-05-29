@@ -28,5 +28,15 @@
     "status": "active",
     "createdAt": "2026-05-26T06:53:31.473Z",
     "id": 3
+  },
+  {
+    "tenantId": 13,
+    "title": "sama",
+    "slug": "sama",
+    "description": "",
+    "url": "ha.plantgen.live/sama",
+    "status": "active",
+    "createdAt": "2026-05-29T04:09:13.853Z",
+    "id": 4
   }
 ]

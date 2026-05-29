@@ -4,7 +4,7 @@ import { TenantDto } from './tenant.dto';
 
 @Injectable()
 export class TenantService {
-  constructor(private storage: FileStorageService) {}
+  constructor(private readonly storage: FileStorageService) {}
 
   async getAllTenants() {
     return this.storage.readJSON('tenants');
@@ -15,12 +15,12 @@ export class TenantService {
   }
 
   async getTenantBySubdomain(subdomain: string) {
-    const tenants = this.storage.readJSON('tenants');
+    const tenants = await this.storage.readJSON('tenants');
     return tenants.find((t: any) => t.subdomain === subdomain);
   }
 
   async getTenantByCustomDomain(domain: string) {
-    const tenants = this.storage.readJSON('tenants');
+    const tenants = await this.storage.readJSON('tenants');
     return tenants.find((t: any) => t.customDomain === domain);
   }
 

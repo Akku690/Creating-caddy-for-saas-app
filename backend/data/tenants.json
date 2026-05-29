@@ -39,7 +39,8 @@
     "logo": "https://via.placeholder.com/150",
     "status": "active",
     "createdAt": "2026-05-26T06:35:25.954Z",
-    "id": 4
+    "id": 4,
+    "customDomain": ""
   },
   {
     "company": "lalabala",
@@ -120,5 +121,15 @@
     "status": "active",
     "createdAt": "2026-05-26T06:52:42.939Z",
     "id": 12
+  },
+  {
+    "company": "ha",
+    "subdomain": "ha",
+    "email": "admin@ha.local",
+    "themeColor": "#000000",
+    "logo": "https://via.placeholder.com/150",
+    "status": "active",
+    "createdAt": "2026-05-29T04:09:05.269Z",
+    "id": 13
   }
 ]

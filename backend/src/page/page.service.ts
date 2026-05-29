@@ -4,14 +4,14 @@ import { CreatePageDto, UpdatePageDto } from './page.dto';
 
 @Injectable()
 export class PageService {
-  constructor(private storage: FileStorageService) {}
+  constructor(private readonly storage: FileStorageService) {}
 
   async getAllPages() {
     return this.storage.readJSON('pages');
   }
 
   async getPagesByTenant(tenantId: number) {
-    const pages = this.storage.readJSON('pages');
+    const pages = await this.storage.readJSON('pages');
     return pages.filter((p: any) => p.tenantId === tenantId);
   }
 
@@ -37,7 +37,7 @@ export class PageService {
   }
 
   async updatePage(id: number, tenantId: number, dto: UpdatePageDto) {
-    const pages = this.storage.readJSON('pages');
+    const pages = await this.storage.readJSON('pages');
     const page = pages.find((p: any) => p.id === id && p.tenantId === tenantId);
 
     if (!page) {
@@ -51,12 +51,12 @@ export class PageService {
       page.description = dto.description;
     }
 
-    this.storage.writeJSON('pages', pages);
+    await this.storage.writeJSON('pages', pages);
     return page;
   }
 
   async deletePage(id: number, tenantId: number) {
-    const pages = this.storage.readJSON('pages');
+    const pages = await this.storage.readJSON('pages');
     const index = pages.findIndex((p: any) => p.id === id && p.tenantId === tenantId);
 
     if (index === -1) {
@@ -64,7 +64,7 @@ export class PageService {
     }
 
     pages.splice(index, 1);
-    this.storage.writeJSON('pages', pages);
+    await this.storage.writeJSON('pages', pages);
     return { success: true, id };
   }
 }
