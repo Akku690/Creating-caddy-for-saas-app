@@ -186,18 +186,7 @@ systemctl reload caddy
 
 ## Step 5: Start Services with pm2
 
-### 5.1 Create pm2 Start Script
-
-```bash
-cd /opt/plantgen-saas
-# This path must exist in the repository root you deployed.
-# If you cloned into a nested folder, cd into that folder first.
-chmod +x caddy/run-caddy.sh
-```
-
-If `caddy/run-caddy.sh` is missing on the server, copy the full repository root so the `caddy/` directory is included, then rerun the command above.
-
-### 5.2 Start pm2
+### 5.1 Start pm2
 
 ```bash
 pm2 start ecosystem.config.js
@@ -210,19 +199,21 @@ pm2 delete all
 pm2 start ecosystem.config.js
 ```
 
-### 5.3 Check Status
+### 5.2 Check Status
 
 ```bash
 pm2 status
 pm2 logs
 ```
 
-### 5.4 Setup pm2 Startup
+### 5.3 Setup pm2 Startup
 
 ```bash
 pm2 startup
 pm2 save
 ```
+
+Note: Caddy is run as a system service (`systemctl status caddy`), not as a PM2 app. If you update the `Caddyfile`, reload it with `systemctl reload caddy`.
 
 ## Step 6: Configure DNS
 

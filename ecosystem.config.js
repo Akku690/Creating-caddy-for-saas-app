@@ -25,12 +25,5 @@ module.exports = {
       out_file: '/home/ubuntu/.pm2/logs/saas-frontend-out.log',
       max_memory_restart: '500M',
     },
-    {
-      name: 'caddy',
-      script: './caddy/run-caddy.sh',
-      watch: ['./caddy/Caddyfile'],
-      error_file: '/home/ubuntu/.pm2/logs/caddy-error.log',
-      out_file: '/home/ubuntu/.pm2/logs/caddy-out.log',
-    },
   ],
 };
