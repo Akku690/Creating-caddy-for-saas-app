@@ -5,7 +5,7 @@ const getApiUrl = () => {
     return 'http://localhost:8000';
   }
 
-  return '/api';
+  return '';
 };
 
 const api = axios.create({
