@@ -9,8 +9,8 @@ module.exports = {
         NODE_ENV: 'production',
         PORT: 8000,
       },
-      error_file: './logs/backend-error.log',
-      out_file: './logs/backend-out.log',
+      error_file: '/home/ubuntu/.pm2/logs/saas-backend-error.log',
+      out_file: '/home/ubuntu/.pm2/logs/saas-backend-out.log',
       max_memory_restart: '500M',
     },
     {
@@ -21,16 +21,16 @@ module.exports = {
       env: {
         NODE_ENV: 'production',
       },
-      error_file: './logs/frontend-error.log',
-      out_file: './logs/frontend-out.log',
+      error_file: '/home/ubuntu/.pm2/logs/saas-frontend-error.log',
+      out_file: '/home/ubuntu/.pm2/logs/saas-frontend-out.log',
       max_memory_restart: '500M',
     },
     {
       name: 'caddy',
       script: './caddy/run-caddy.sh',
       watch: ['./caddy/Caddyfile'],
-      error_file: './logs/caddy-error.log',
-      out_file: './logs/caddy-out.log',
+      error_file: '/home/ubuntu/.pm2/logs/caddy-error.log',
+      out_file: '/home/ubuntu/.pm2/logs/caddy-out.log',
     },
   ],
 };

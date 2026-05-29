@@ -106,6 +106,8 @@ npm run build
 cd ..
 ```
 
+Use these commands from the application root so both builds run against the correct package manifests and output directories.
+
 ## Step 3: Environment Configuration
 
 ### 3.1 Backend Environment
@@ -119,8 +121,9 @@ Update with production values:
 ```env
 PORT=8000
 NODE_ENV=production
-JWT_SECRET=generate-a-random-key-here
 ```
+
+This deployment is public/no-auth, so no JWT secret is required for the main app flow.
 
 ### 3.2 Frontend Environment
 
@@ -187,12 +190,23 @@ systemctl reload caddy
 
 ```bash
 cd /opt/plantgen-saas
+# This path must exist in the repository root you deployed.
+# If you cloned into a nested folder, cd into that folder first.
 chmod +x caddy/run-caddy.sh
 ```
+
+If `caddy/run-caddy.sh` is missing on the server, copy the full repository root so the `caddy/` directory is included, then rerun the command above.
 
 ### 5.2 Start pm2
 
 ```bash
+pm2 start ecosystem.config.js
+```
+
+If you changed `ecosystem.config.js`, restart the processes instead of reusing an old PM2 definition:
+
+```bash
+pm2 delete all
 pm2 start ecosystem.config.js
 ```
 
