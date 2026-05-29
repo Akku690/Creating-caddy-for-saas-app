@@ -3,8 +3,8 @@ module.exports = {
     {
       name: 'saas-backend',
       script: './backend/dist/main.js',
-      instances: 2,
-      exec_mode: 'cluster',
+      instances: 1,
+      exec_mode: 'fork',
       env: {
         NODE_ENV: 'production',
         PORT: 8000,

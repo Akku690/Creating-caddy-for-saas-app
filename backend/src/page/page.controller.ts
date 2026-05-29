@@ -2,6 +2,7 @@ import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common'
 import { PageService } from './page.service';
 import { TenantService } from '../tenant/tenant.service';
 import { CreatePageDto, UpdatePageDto } from './page.dto';
+import { ParseIntPipe } from '@nestjs/common';
 
 @Controller('api/page')
 export class PageController {
@@ -16,12 +17,12 @@ export class PageController {
   }
 
   @Get('tenant/:tenantId')
-  async getPagesByTenant(@Param('tenantId') tenantId: number) {
+  async getPagesByTenant(@Param('tenantId', ParseIntPipe) tenantId: number) {
     return this.pageService.getPagesByTenant(tenantId);
   }
 
   @Get(':id')
-  async getPageById(@Param('id') id: number) {
+  async getPageById(@Param('id', ParseIntPipe) id: number) {
     return this.pageService.getPageById(id);
   }
 

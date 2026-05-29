@@ -206,6 +206,8 @@ pm2 status
 pm2 logs
 ```
 
+Important: this deployment uses JSON files for storage, so the backend must run as a single PM2 process. Do not switch `saas-backend` to cluster mode until you migrate to a real database.
+
 ### 5.3 Setup pm2 Startup
 
 ```bash

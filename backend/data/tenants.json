@@ -131,5 +131,15 @@
     "status": "active",
     "createdAt": "2026-05-29T04:09:05.269Z",
     "id": 13
+  },
+  {
+    "company": "soso",
+    "subdomain": "soso",
+    "email": "nitishmaurya6580@gmail.com",
+    "themeColor": "#000000",
+    "logo": "https://via.placeholder.com/150",
+    "status": "active",
+    "createdAt": "2026-05-29T05:48:20.819Z",
+    "id": 14
   }
 ]
